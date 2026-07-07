@@ -1,3 +1,5 @@
+#include <iostream>
+
 class GameManager
 {
 private:
@@ -18,8 +20,11 @@ public:
 	void StartGame()
 	{
 		// ゲーム開始処理
+		std::cout << "Game Started!" << std::endl;
 	}
 };
 
-// 使用例
-//GameManager::Instance().StartGame();
+int main()
+{
+	GameManager::Instance().StartGame();
+} 
