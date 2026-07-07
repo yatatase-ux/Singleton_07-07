@@ -2,6 +2,39 @@
 #include <memory>
 #include <conio.h>
 
+///@brief コピー禁止マクロ
+#define NONCOPYABLE(className)  \
+public: \
+    className(const className&) = delete; \
+    className& operator=(const className&) = delete;
+
+///@brief シングルトン定義マクロ
+#define SINGLETON(className) \
+    NONCOPYABLE(className) \
+private: \
+    className() {} \
+public: \
+    static className& Instance() \
+    { \
+        static className instance; \
+        return instance; \
+    }
+
+///@brief シーンクラス定義
+#define DEFINE_SCENE(className) class className : Scene
+
+///@brief シーンクラスのEnter定義
+#define SCENE_ENTER() virtual void Enter(GameManager& manager)
+
+///@brief シーンクラスのExec定義
+#define SCENE_EXEC() virtual void Execute(GameManager& manager)
+
+///@brief シーンクラスのExit定義
+#define SCENE_EXIT() virtual void Exit(GameManager& manager)
+
+
+
+
 class Base
 {
 protected:
@@ -9,12 +42,6 @@ protected:
 public:
 	Base(const Base&) = delete;
 	Base& operator=(const Base&) = delete;
-
-	/*static Base& Instance()
-	{
-		static Base instance;
-		return instance;
-	}*/
 
 	virtual void Update() = 0;
 };
@@ -135,15 +162,18 @@ public:
 			if (_kbhit())
 			{
 				int key = _getch();
-				scene = SceneChange(scene_num);
-				scene->Update();
+				if(key == ' ')
+				{
+					scene = SceneChange();
+					scene->Update();
+				}
 			}
 		}
 	}
 
-	Base* SceneChange(Scene now_scene)
+	Base* SceneChange()
 	{
-		switch (now_scene)
+		switch (scene_num)
 		{
 		case Scene::TITLE:
 			scene_num = Scene::PLAY;
