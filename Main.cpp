@@ -33,8 +33,6 @@ public: \
 #define SCENE_EXIT() virtual void Exit(GameManager& manager)
 
 
-
-
 class Base
 {
 protected:
